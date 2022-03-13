@@ -952,6 +952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1576281370}
   - component: {fileID: 1576281369}
+  - component: {fileID: 1576281371}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -971,7 +972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e937ce68ad0ded41b91ceaf42b7e013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
   test_tile: {fileID: 6992311528189828011, guid: 27bdea1838be79641b467e25dd3b85d1, type: 3}
   test_enter: {fileID: 5252452243100610193, guid: f74a3a6b0c2196d4ca08d04a188af2ae, type: 3}
   test_exit: {fileID: 5372649648289864661, guid: a93c8c319621483429a896c9037b9676, type: 3}
@@ -991,6 +991,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1576281371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576281368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683b1eae2ce021e4eb7ee5cbe1bc62c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openList: []
+  closeList: []
+  finalList: []
 --- !u!1 &1621928348
 GameObject:
   m_ObjectHideFlags: 0

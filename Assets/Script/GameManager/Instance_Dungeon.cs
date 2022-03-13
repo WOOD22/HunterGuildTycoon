@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Instance_Dungeon : MonoBehaviour
 {
     GameData_Script GameData_Script;
+    Astar_Pathfinder Astar_Pathfinder;
+
     public GameObject test_tile;
     public GameObject test_enter;
     public GameObject test_exit;
@@ -16,6 +18,7 @@ public class Instance_Dungeon : MonoBehaviour
     private void Start()
     {
         GameData_Script = GameObject.Find("GameData").GetComponent<GameData_Script>();
+        Astar_Pathfinder = GameObject.Find("GameManager").GetComponent<Astar_Pathfinder>();
     }
     //던전 생성하기====================================================================================================
     public void Create_Dungeon()
@@ -90,7 +93,6 @@ public class Instance_Dungeon : MonoBehaviour
         Dungeon_Enter_And_Exit(dungeon);
         //테스트용 랜더링
         Dungeon_Instantiate(dungeon);
-        Debug.Log(dungeon.dungeon_Tilemap_Layer1_List[0].GetLength(0) + ", " + dungeon.dungeon_Tilemap_Layer1_List[0].GetLength(1));
     }
     //8방향 탐색=======================================================================================================
     int Dugeon_Search(int[,] dungeon, int x, int y)
@@ -238,5 +240,6 @@ public class Instance_Dungeon : MonoBehaviour
                 }
             }
         }
+        Astar_Pathfinder.Pathfinder(dungeon_Tilemap_Layer1, new Vector2Int(enter_x, enter_y), new Vector2Int(exit_x, exit_y));
     }
 }
