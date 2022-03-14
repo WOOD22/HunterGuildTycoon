@@ -30,7 +30,7 @@ public class Astar_Pathfinder : MonoBehaviour
     public List<Node> finalList = new List<Node>();
     Node[,] node_map;
 
-    public void Pathfinder(int[,] _map, Vector2Int start_pos, Vector2Int end_pos)
+    public List<Node> Pathfinder(int[,] _map, Vector2Int start_pos, Vector2Int end_pos)
     {
         node_map = new Node[_map.GetLength(0), _map.GetLength(1)];
 
@@ -97,7 +97,9 @@ public class Astar_Pathfinder : MonoBehaviour
             OpenListAdd(current_Node.x - 1, current_Node.y + 1);
             OpenListAdd(current_Node.x - 1, current_Node.y - 1);
         }
-        OnDrawGizmos();
+
+        return finalList;
+
         void OpenListAdd(int x, int y)
         {
             if (_map[x, y] != 0 && !closeList.Contains(node_map[x, y]))
