@@ -38,6 +38,7 @@ public class Party
     public List<Unit> party_Unit_List           //파티원(최대 5명)
         = new List<Unit>();
     public int party_Power;                     //파티 전투력
+    public int party_pos_x, party_pos_y;        //파티 위치
 }
 [Serializable]
 public struct Unit
