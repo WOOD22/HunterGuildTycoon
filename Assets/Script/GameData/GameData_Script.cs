@@ -25,6 +25,7 @@ public class Guild
     public int guild_Money;                     //길드가 소유한 재화
     public List<Item> guild_Item                //길드가 소유한 아이템
         = new List<Item>();
+    public List<Party> player_Guild_Party_List; //길드에 구성된 파티
 }
 [Serializable]
 public class Guild_Master

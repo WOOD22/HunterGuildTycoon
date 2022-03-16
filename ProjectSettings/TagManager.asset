@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Floor
+  - Well
+  - Object
+  - Unit
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 3984385991
+    locked: 0
+  - name: Well
+    uniqueID: 3747214681
+    locked: 0
+  - name: Object
+    uniqueID: 940183497
+    locked: 0
+  - name: Unit
+    uniqueID: 929890535
     locked: 0

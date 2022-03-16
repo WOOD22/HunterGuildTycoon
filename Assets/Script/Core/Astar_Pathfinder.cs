@@ -91,11 +91,12 @@ public class Astar_Pathfinder : MonoBehaviour
             OpenListAdd(current_Node.x - 1, current_Node.y);
             OpenListAdd(current_Node.x, current_Node.y + 1);
             OpenListAdd(current_Node.x, current_Node.y - 1);
-
+            
             OpenListAdd(current_Node.x + 1, current_Node.y + 1);
             OpenListAdd(current_Node.x + 1, current_Node.y - 1);
             OpenListAdd(current_Node.x - 1, current_Node.y + 1);
             OpenListAdd(current_Node.x - 1, current_Node.y - 1);
+            
         }
 
         return finalList;
