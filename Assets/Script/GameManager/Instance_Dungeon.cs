@@ -24,6 +24,7 @@ public class Instance_Dungeon : MonoBehaviour
     {
         GameData_Script = GameObject.Find("GameData").GetComponent<GameData_Script>();
         Astar_Pathfinder = GameObject.Find("GameManager").GetComponent<Astar_Pathfinder>();
+        Create_Dungeon();
     }
     //던전 생성하기====================================================================================================
     public void Create_Dungeon()

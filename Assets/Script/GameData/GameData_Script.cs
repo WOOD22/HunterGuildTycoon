@@ -10,7 +10,7 @@ public class GameData_Script : MonoBehaviour
 [Serializable]
 public class GameData
 {
-    public List<Party> player_Guild_Party_List; //길드에 구성된 파티
+    public Guild player_Guild = new Guild();
     public Dungeon in_Dungeon = new Dungeon();
 }
 [Serializable]
@@ -41,8 +41,14 @@ public class Party
     public int party_Power;                     //파티 전투력
     public int party_pos_x, party_pos_y;        //파티 위치
 }
+
 [Serializable]
-public struct Unit
+public class Hunter : Unit
+{
+
+}
+[Serializable]
+public class Unit
 {
     public string unit_Code;                    //유닛의 코드
     public string unit_Name;                    //유닛의 이름
@@ -126,10 +132,10 @@ public class Item
 public class Dungeon
 {
     public string dungeon_Type;                 //던전 타입
-    public List<int[,]>                        //던전 레이어 1(바닥)
+    public List<int[,]>                         //던전 레이어 1(바닥)
         dungeon_Tilemap_Layer1_List;
-    public List<int[,]>                        //던전 레이어 2(벽)
+    public List<int[,]>                         //던전 레이어 2(벽)
         dungeon_Tilemap_Layer2_List;
-    public List<int[,]>                        //던전 레이어 3(오브젝트)
+    public List<int[,]>                         //던전 레이어 3(오브젝트)
         dungeon_Tilemap_Layer3_List;
 }
