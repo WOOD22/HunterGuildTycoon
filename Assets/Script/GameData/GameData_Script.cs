@@ -12,6 +12,7 @@ public class GameData
 {
     public Guild player_Guild = new Guild();
     public Dungeon in_Dungeon = new Dungeon();
+    public static string language = "KR";
 }
 [Serializable]
 public class Guild
@@ -36,7 +37,9 @@ public class Guild_Master
 public class Party
 {
     public string party_Name;                   //파티 이름
-    public List<Unit> party_Unit_List           //파티원(최대 5명)
+    public List<Unit> frontline                 //파티전열
+        = new List<Unit>();
+    public List<Unit> backline                  //파티후열
         = new List<Unit>();
     public int party_Power;                     //파티 전투력
     public int party_pos_x, party_pos_y;        //파티 위치
