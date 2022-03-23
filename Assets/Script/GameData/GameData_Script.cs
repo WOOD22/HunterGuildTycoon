@@ -55,7 +55,8 @@ public class Unit
 {
     public string unit_Code;                    //유닛의 코드
     public string unit_Name;                    //유닛의 이름
-    public Image unit_Image;                    //유닛의 이미지
+    public Sprite unit_Temp;                    //유닛의 이미지
+    public Sprite unit_Hair;                    //유닛의 이미지
     public string unit_Faction;                 //유닛의 팩션
     public string unit_Character;               //유닛의 성격
     public Unit_Status unit_Status;             //유닛 스테이터스
