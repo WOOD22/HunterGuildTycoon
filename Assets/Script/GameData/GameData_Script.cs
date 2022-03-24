@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 using System;
 public class GameData_Script : MonoBehaviour
 {
@@ -10,9 +11,15 @@ public class GameData_Script : MonoBehaviour
 [Serializable]
 public class GameData
 {
-    public Guild player_Guild = new Guild();
-    public Dungeon in_Dungeon = new Dungeon();
+    public List<Guild> guild_List = new List<Guild>();
+    public List<Dungeon> dungeon_Data = new List<Dungeon>();
     public static string language = "KR";
+}
+[Serializable]
+public struct DataBase
+{
+    public List<Unit> unit_DB;
+    public List<Item> item_DB;
 }
 [Serializable]
 public class Guild
@@ -41,29 +48,44 @@ public class Party
         = new List<Unit>();
     public List<Unit> backline                  //파티후열
         = new List<Unit>();
-    public int party_Power;                     //파티 전투력
+    public int party_Power;                     //파티 전투력(임시:6가지 능력치 + 2가지 방어력)
     public int party_pos_x, party_pos_y;        //파티 위치
+    public int party_Sight                      //파티 시야
+    {
+        get
+        {
+            return 5;
+        }
+    }
 }
-
 [Serializable]
-public class Hunter : Unit
-{
-
-}
-[Serializable]
-public class Unit
+public class Unit : Status
 {
     public string unit_Code;                    //유닛의 코드
     public string unit_Name;                    //유닛의 이름
-    public Sprite unit_Temp;                    //유닛의 이미지
-    public Sprite unit_Hair;                    //유닛의 이미지
+    public string unit_Species;                 //유닛의 종족
     public string unit_Faction;                 //유닛의 팩션
     public string unit_Character;               //유닛의 성격
-    public Unit_Status unit_Status;             //유닛 스테이터스
+
+    public Sprite unit_Base_Sprite;             //유닛의 베이스 이미지
+    public Sprite unit_Hair_Sprite;             //유닛의 머리스타일 이미지
+    public Sprite unit_Eyes_Sprite;             //유닛의 눈 이미지
+    public Sprite unit_Head_Sprite;             //유닛의 머리보호구 이미지
+    public Sprite unit_Body_Sprite;             //유닛의 몸통보호구 이미지
+    public Sprite unit_Weapon_1_Sprite;         //유닛의 무기 이미지1
+    public Sprite unit_Weapon_2_Sprite;         //유닛의 무기 이미지2
+    
+    public Item unit_Head_Item;                 //유닛의 머리보호구 
+    public Item unit_Body_Item;                 //유닛의 몸통보호구 
+    public Item unit_Weapon_1_Item;             //유닛의 무기1 
+    public Item unit_Weapon_2_Item;             //유닛의 무기2
+    public Item unit_Accessory_1_Item;          //유닛의 장신구1
+    public Item unit_Accessory_2_Item;          //유닛의 장신구2
+
     public List<Item> unit_Item_List;           //유닛이 소유한 아이템
 }
 [Serializable]
-public class Unit_Status
+public class Status
 {
     public int level;                           //레벨업 시 가중치 비례 랜덤 능력치 상승(만렙 10)
     public int max_EXP, pool_EXP;               //경험치
@@ -74,13 +96,13 @@ public class Unit_Status
     public int max_Hunger, left_Hunger;         //0에 가까울수록 배고픔(모두 소진 시 HP 소모)
     public int max_Sleep, left_Sleep;           //0에 가까울수록 졸림(모두 소진 시 MP 소모)
     public float max_WT, pool_WT;               //Weight의 약자
-    public int st_STR, st_DEX, st_CON;          //신체 능력치(평균 5)
-    public int st_INT, st_WIS, st_WIL;          //정신 능력치(평균 5)
-    public int pt_STR, pt_DEX, pt_CON;          //신체 능력치 가중치(평균 5)
-    public int pt_INT, pt_WIS, pt_WIL;          //정신 능력치 가중치(평균 5)
+    public int st_STR, st_DEX, st_CON;          //신체 능력치(평균 10)
+    public int st_INT, st_WIS, st_WIL;          //정신 능력치(평균 10)
+    public int pt_STR, pt_DEX, pt_CON;          //신체 능력치 가중치(평균 10)
+    public int pt_INT, pt_WIS, pt_WIL;          //정신 능력치 가중치(평균 10)
     public int df_Physical, df_Magic;           //방어력(받은 피해량 = 데미지 * 추가 - 방어력)
     public int sight, search_Type;              //시야(벽에 가려지지 않은 범위 내의 타일을 랜더링함), 주 감각기관(시각, 청각, 후각, 육감)
-    //레벨 업 메소드
+    //레벨 업 함수
     public void Level_UP()
     {
         if (max_EXP <= pool_EXP && level < 10)
@@ -136,10 +158,13 @@ public class Item
 public class Dungeon
 {
     public string dungeon_Type;                 //던전 타입
-    public List<int[,]>                         //던전 레이어 1(바닥)
-        dungeon_Tilemap_Layer1_List;
-    public List<int[,]>                         //던전 레이어 2(벽)
-        dungeon_Tilemap_Layer2_List;
-    public List<int[,]>                         //던전 레이어 3(오브젝트)
-        dungeon_Tilemap_Layer3_List;
+    public List<Party> in_Dungeon_Party;        //던전 안에 있는 파티
+    public int[,]                               //던전 레이어 1(바닥)
+        dungeon_Tilemap_Layer1;
+    public int[,]                               //던전 레이어 2(벽)
+        dungeon_Tilemap_Layer2;
+    public int[,]                               //던전 레이어 3(오브젝트)
+        dungeon_Tilemap_Layer3;
+    public int[,]                               //던전 레이어 4(유닛)
+        dungeon_Tilemap_Layer4;
 }

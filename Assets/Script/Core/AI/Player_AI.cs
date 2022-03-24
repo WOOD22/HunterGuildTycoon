@@ -9,9 +9,9 @@ public class Player_AI : MonoBehaviour
     public int[,] dungeon;
     public int x, y;
 
-    void Start()
+    public void Start_Position()
     {
-
+        player.transform.localPosition = new Vector2(x, y);
     }
 
     // Update is called once per frame
