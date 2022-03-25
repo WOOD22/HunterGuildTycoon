@@ -21,6 +21,8 @@ public class Instance_Dungeon : MonoBehaviour
     public GameObject tilemap_Layer2;
     public GameObject tilemap_Layer3;
 
+    List<Node> checkNode;
+
     private void Start()
     {
         GameData_Script = GameObject.Find("GameData").GetComponent<GameData_Script>();
@@ -46,35 +48,35 @@ public class Instance_Dungeon : MonoBehaviour
     //고블린 동굴 던전 생성하기========================================================================================
     void Create_Dungeon_Goblin_Cave(Dungeon dungeon)
     {
-        int total_floor = UnityEngine.Random.Range(4, 8 + 1);
         int max_x = 128, max_y = 128;
-        dungeon.dungeon_Tilemap_Layer1 = new int[max_x, max_y];
-        dungeon.dungeon_Tilemap_Layer2 = new int[max_x, max_y];
-        dungeon.dungeon_Tilemap_Layer3 = new int[max_x, max_y];
-        //맵 초기화
-        Dungeon_Initialization(dungeon);
-        for (int x = 0; x < max_x; x++)
+        while (true)
         {
-            for (int y = 0; y < max_y; y++)
+            dungeon.dungeon_Tilemap_Layer1 = new int[max_x, max_y];
+            dungeon.dungeon_Tilemap_Layer2 = new int[max_x, max_y];
+            dungeon.dungeon_Tilemap_Layer3 = new int[max_x, max_y];
+            checkNode = new List<Node>();
+            //맵 초기화
+            Dungeon_Initialization(dungeon);
+            for (int x = 0; x < max_x; x++)
             {
-                if (dungeon.dungeon_Tilemap_Layer1[x, y] != 0)
+                for (int y = 0; y < max_y; y++)
                 {
-                    int random = UnityEngine.Random.Range(0, 1 + 1);
-                    if (random == 0)
+                    if (dungeon.dungeon_Tilemap_Layer1[x, y] != 0)
                     {
-                        dungeon.dungeon_Tilemap_Layer1[x, y] = 0;
-                    }
-                    else if (random != 0)
-                    {
-                        dungeon.dungeon_Tilemap_Layer1[x, y] = UnityEngine.Random.Range(1, 2 + 1);
+                        int random = UnityEngine.Random.Range(0, 1 + 1);
+                        if (random == 0)
+                        {
+                            dungeon.dungeon_Tilemap_Layer1[x, y] = 0;
+                        }
+                        else if (random != 0)
+                        {
+                            dungeon.dungeon_Tilemap_Layer1[x, y] = UnityEngine.Random.Range(1, 2 + 1);
+                        }
                     }
                 }
             }
-        }
-        //절차적 형성 동굴 생성하기
-        for (int r = 0; r < 5; r++)
-        {
-            for (int i = 0; i < total_floor; i++)
+            //절차적 형성 동굴 생성하기
+            for (int r = 0; r < 5; r++)
             {
                 for (int x = 0; x < max_x; x++)
                 {
@@ -82,7 +84,7 @@ public class Instance_Dungeon : MonoBehaviour
                     {
                         if (dungeon.dungeon_Tilemap_Layer1[x, y] == 0)
                         {
-                            
+
                             if (x != 0 && x != dungeon.dungeon_Tilemap_Layer1.GetLength(0) - 1 &&
                                 y != 0 && y != dungeon.dungeon_Tilemap_Layer1.GetLength(1) - 1)
                             {
@@ -96,9 +98,6 @@ public class Instance_Dungeon : MonoBehaviour
                     }
                 }
             }
-        }
-        for (int i = 0; i < total_floor; i++)
-        {
             for (int x = 0; x < dungeon.dungeon_Tilemap_Layer1.GetLength(0) - 1; x++)
             {
                 for (int y = 0; y < dungeon.dungeon_Tilemap_Layer1.GetLength(1) - 1; y++)
@@ -109,9 +108,23 @@ public class Instance_Dungeon : MonoBehaviour
                     }
                 }
             }
+            //입구 출구 생성
+            Dungeon_Enter_And_Exit(dungeon);
+            if(checkNode.Count != 0)
+            {
+                break;
+            }
+            for (int x = 0; x < dungeon.dungeon_Tilemap_Layer1.GetLength(0) - 1; x++)
+            {
+                for (int y = 0; y < dungeon.dungeon_Tilemap_Layer1.GetLength(1) - 1; y++)
+                {
+                    if (dungeon.dungeon_Tilemap_Layer1[x, y] != 0 && dungeon.dungeon_Tilemap_Layer3[x, y] == 0)
+                    {
+                        dungeon.dungeon_Tilemap_Layer3[x, y] = 3;   //동굴버섯
+                    }
+                }
+            }
         }
-        //입구 출구 생성
-        Dungeon_Enter_And_Exit(dungeon);
         //테스트용 랜더링
         Dungeon_Instantiate(dungeon);
     }
@@ -194,7 +207,7 @@ public class Instance_Dungeon : MonoBehaviour
                 if (dungeon_Tilemap_Layer1[x, y] == 0)
                 {
                     GameObject instance;
-                    if (tilemap_Layer1.transform.Find("(" + x + ", " + y + ")") != true)
+                    if (tilemap_Layer1.transform.Find("(" + x + ", " + y + ")") == false)
                     {
                         instance = Instantiate(tile_List[9], tilemap_Layer1.transform);
                         instance.name = "(" + x + ", " + y + ")";
@@ -348,7 +361,7 @@ public class Instance_Dungeon : MonoBehaviour
                 if (dungeon_Tilemap_Layer1[x, y] != 0)
                 {
                     GameObject instance;
-                    if (tilemap_Layer1.transform.Find("(" + x + ", " + y + ")") != true)
+                    if (tilemap_Layer1.transform.Find("(" + x + ", " + y + ")") == false)
                     {
                         instance = Instantiate(tile_List[9], tilemap_Layer1.transform);
                         instance.name = "(" + x + ", " + y + ")";
@@ -368,16 +381,48 @@ public class Instance_Dungeon : MonoBehaviour
                         instance.GetComponent<SpriteRenderer>().sprite = tile_List[7].GetComponent<SpriteRenderer>().sprite;
                     }
                 }
+                //입구 렌더링
                 if (dungeon_Tilemap_Layer3[x, y] == 1)
                 {
                     GameObject instance;
-                    instance = Instantiate(test_enter, tilemap_Layer3.transform);
+                    if (tilemap_Layer3.transform.Find("Enter") != true)
+                    {
+                        instance = Instantiate(test_enter, tilemap_Layer3.transform);
+                        instance.name = "Enter";
+                    }
+                    else
+                    {
+                        instance = tilemap_Layer3.transform.Find("Enter").gameObject;
+                    }
                     instance.transform.localPosition = new Vector2(x, y);
                 }
+                //출구 렌더링
                 if (dungeon_Tilemap_Layer3[x, y] == 2)
                 {
                     GameObject instance;
-                    instance = Instantiate(test_exit, tilemap_Layer3.transform);
+                    if (tilemap_Layer3.transform.Find("Exit") != true)
+                    {
+                        instance = Instantiate(test_exit, tilemap_Layer3.transform);
+                        instance.name = "Exit";
+                    }
+                    else
+                    {
+                        instance = tilemap_Layer3.transform.Find("Exit").gameObject;
+                    }
+                    instance.transform.localPosition = new Vector2(x, y);
+                }
+                if (dungeon_Tilemap_Layer3[x, y] == 3)
+                {
+                    GameObject instance;
+                    if (tilemap_Layer3.transform.Find("Exit") != true)
+                    {
+                        instance = Instantiate(test_exit, tilemap_Layer3.transform);
+                        instance.name = "Exit";
+                    }
+                    else
+                    {
+                        instance = tilemap_Layer3.transform.Find("Exit").gameObject;
+                    }
                     instance.transform.localPosition = new Vector2(x, y);
                 }
             }
@@ -420,7 +465,7 @@ public class Instance_Dungeon : MonoBehaviour
                 && enter_x > dungeon_Tilemap_Layer1.GetLength(0) * 3 / 4)
                 || (exit_x > dungeon_Tilemap_Layer1.GetLength(0) * 3 / 4
                 && enter_x < dungeon_Tilemap_Layer1.GetLength(0) / 4))
-                 || ((exit_y < dungeon_Tilemap_Layer1.GetLength(1) / 4
+                    || ((exit_y < dungeon_Tilemap_Layer1.GetLength(1) / 4
                 && enter_y > dungeon_Tilemap_Layer1.GetLength(1) * 3 / 4)
                 || (exit_y > dungeon_Tilemap_Layer1.GetLength(1) * 3 / 4)
                 && enter_y < dungeon_Tilemap_Layer1.GetLength(1) / 4))
@@ -436,11 +481,7 @@ public class Instance_Dungeon : MonoBehaviour
         }
         try
         {
-            List<Node> finalList = Astar_Pathfinder.Pathfinder(dungeon_Tilemap_Layer1, new Vector2Int(enter_x, enter_y), new Vector2Int(exit_x, exit_y));
-            if (finalList.Count == 0) 
-            {
-
-            }
+            checkNode = Astar_Pathfinder.Pathfinder(dungeon_Tilemap_Layer1, new Vector2Int(enter_x, enter_y), new Vector2Int(exit_x, exit_y));
         }
         catch (NullReferenceException)
         {
