@@ -7,7 +7,7 @@ public class Player_AI : MonoBehaviour
     public GameObject player;
     public Party party;
     public int[,] dungeon;
-    public int x, y;
+    public static int x, y;
 
     public void Start_Position()
     {

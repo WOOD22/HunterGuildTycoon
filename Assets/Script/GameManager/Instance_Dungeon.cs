@@ -6,7 +6,6 @@ using System;
 
 public class Instance_Dungeon : MonoBehaviour
 {
-    GameData_Script GameData_Script;
     Astar_Pathfinder Astar_Pathfinder;
     List<Dungeon> dungeon_Data;
 
@@ -21,21 +20,20 @@ public class Instance_Dungeon : MonoBehaviour
     public GameObject tilemap_Layer2;
     public GameObject tilemap_Layer3;
 
-    List<Node> checkNode;
+    List<Node> pathList;
 
     private void Start()
     {
-        GameData_Script = GameObject.Find("GameData").GetComponent<GameData_Script>();
         Astar_Pathfinder = GameObject.Find("GameManager").GetComponent<Astar_Pathfinder>();
         Create_Dungeon();
     }
     //던전 생성하기====================================================================================================
     public void Create_Dungeon()
     {
-        dungeon_Data = GameData_Script.gamedata.dungeon_Data;
+        dungeon_Data = GameData.dungeon_Data;
         dungeon_Data.Add(new Dungeon());
-        dungeon_Data[0].dungeon_Type = "Cave";
-        if (dungeon_Data[0].dungeon_Type == "Cave")
+        dungeon_Data[0].type = "Cave";
+        if (dungeon_Data[0].type == "Cave")
         {
             for (int i = 0; i < 18; i++)
             {
@@ -48,29 +46,25 @@ public class Instance_Dungeon : MonoBehaviour
     //고블린 동굴 던전 생성하기========================================================================================
     void Create_Dungeon_Goblin_Cave(Dungeon dungeon)
     {
-        int max_x = 128, max_y = 128;
-        while (true)
-        {
-            dungeon.dungeon_Tilemap_Layer1 = new int[max_x, max_y];
-            dungeon.dungeon_Tilemap_Layer2 = new int[max_x, max_y];
-            dungeon.dungeon_Tilemap_Layer3 = new int[max_x, max_y];
-            checkNode = new List<Node>();
-            //맵 초기화
-            Dungeon_Initialization(dungeon);
-            for (int x = 0; x < max_x; x++)
+        int size_x = 128, size_y = 128;
+        //while (true)
+        { 
+            Dungeon_Function.Dungeon_Initialization(dungeon, size_x, size_y);
+            pathList = new List<Node>();
+            for (int x = 1; x < size_x - 1; x++)
             {
-                for (int y = 0; y < max_y; y++)
+                for (int y = 1; y < size_y - 1; y++)
                 {
-                    if (dungeon.dungeon_Tilemap_Layer1[x, y] != 0)
+                    if (dungeon.layer1[x, y] != 0)
                     {
                         int random = UnityEngine.Random.Range(0, 1 + 1);
                         if (random == 0)
                         {
-                            dungeon.dungeon_Tilemap_Layer1[x, y] = 0;
+                            dungeon.layer1[x, y] = 0;
                         }
                         else if (random != 0)
                         {
-                            dungeon.dungeon_Tilemap_Layer1[x, y] = UnityEngine.Random.Range(1, 2 + 1);
+                            dungeon.layer1[x, y] = UnityEngine.Random.Range(1, 2 + 1);
                         }
                     }
                 }
@@ -78,130 +72,74 @@ public class Instance_Dungeon : MonoBehaviour
             //절차적 형성 동굴 생성하기
             for (int r = 0; r < 5; r++)
             {
-                for (int x = 0; x < max_x; x++)
+                for (int x = 1; x < size_x - 1; x++)
                 {
-                    for (int y = 0; y < max_y; y++)
+                    for (int y = 1; y < size_y - 1; y++)
                     {
-                        if (dungeon.dungeon_Tilemap_Layer1[x, y] == 0)
+                        if (dungeon.layer1[x, y] == 0)
                         {
-
-                            if (x != 0 && x != dungeon.dungeon_Tilemap_Layer1.GetLength(0) - 1 &&
-                                y != 0 && y != dungeon.dungeon_Tilemap_Layer1.GetLength(1) - 1)
+                            //주변 8칸 중 5칸 타일이면 타일로 변경
+                            if (Dungeon_Function.Tile_Search(dungeon.layer1, true, x, y) > 5)
                             {
-                                //주변 8칸 중 5칸 타일이면 타일로 변경
-                                if (Dungeon_Search(dungeon.dungeon_Tilemap_Layer1, x, y) > 5)
-                                {
-                                    dungeon.dungeon_Tilemap_Layer1[x, y] = UnityEngine.Random.Range(1, 3);
-                                }
+                                dungeon.layer1[x, y] = UnityEngine.Random.Range(1, 3);
                             }
                         }
                     }
                 }
             }
-            for (int x = 0; x < dungeon.dungeon_Tilemap_Layer1.GetLength(0) - 1; x++)
+            for (int x = 1; x < size_x - 1; x++)
             {
-                for (int y = 0; y < dungeon.dungeon_Tilemap_Layer1.GetLength(1) - 1; y++)
+                for (int y = 1; y < size_y - 1; y++)
                 {
-                    if (Dungeon_Search(dungeon.dungeon_Tilemap_Layer1, x, y) < 4)
+                    if (Dungeon_Function.Tile_Search(dungeon.layer1, true, x, y) < 4)
                     {
-                        dungeon.dungeon_Tilemap_Layer1[x, y] = 0;
+                        dungeon.layer1[x, y] = 0;
                     }
                 }
             }
             //입구 출구 생성
-            Dungeon_Enter_And_Exit(dungeon);
-            if(checkNode.Count != 0)
+            Dungeon_Function.Far_Enter_And_Exit(dungeon);
+
+            try
             {
-                break;
-            }
-            for (int x = 0; x < dungeon.dungeon_Tilemap_Layer1.GetLength(0) - 1; x++)
-            {
-                for (int y = 0; y < dungeon.dungeon_Tilemap_Layer1.GetLength(1) - 1; y++)
+                int enter_x = 0, enter_y = 0;
+                int exit_x = 0, exit_y = 0;
+
+                for (int x = 0; x < size_x; x++)
                 {
-                    if (dungeon.dungeon_Tilemap_Layer1[x, y] != 0 && dungeon.dungeon_Tilemap_Layer3[x, y] == 0)
+                    for (int y = 0; y < size_y; y++)
                     {
-                        dungeon.dungeon_Tilemap_Layer3[x, y] = 3;   //동굴버섯
+                        if (dungeon.layer3[x, y] == 1)
+                        {
+                            enter_x = x;
+                            enter_y = y;
+                        }
+                        if (dungeon.layer3[x, y] == 2)
+                        {
+                            exit_x = x;
+                            exit_y = y;
+                        }
                     }
                 }
+                //pathList = Astar_Pathfinder.Pathfinder(dungeon.layer1, new Vector2Int(enter_x, enter_y), new Vector2Int(exit_x, exit_y));
+                //break;
+            }
+            catch (NullReferenceException)
+            {
+
             }
         }
-        //테스트용 랜더링
+        //테스트용 렌더링
         Dungeon_Instantiate(dungeon);
     }
-    //8방향 탐색=======================================================================================================
-    int Dungeon_Search(int[,] dungeon, int x, int y)
-    {
-        int count = 0;
-        //가장자리 연산 제외
-        if (x != 0 && x != dungeon.GetLength(0) - 1 &&
-            y != 0 && y != dungeon.GetLength(1) - 1)
-        {
-            //십자 탐색
-            if (dungeon[x + 1, y] != 0)
-            {
-                count++;
-            }
-            if (dungeon[x - 1, y] != 0)
-            {
-                count++;
-            }
-            if (dungeon[x, y + 1] != 0)
-            {
-                count++;
-            }
-            if (dungeon[x, y - 1] != 0)
-            {
-                count++;
-            }
-            //대각선 탐색
-            if (dungeon[x + 1, y + 1] != 0)
-            {
-                count++;
-            }
-            if (dungeon[x + 1, y - 1] != 0)
-            {
-                count++;
-            }
-            if (dungeon[x - 1, y + 1] != 0)
-            {
-                count++;
-            }
-            if (dungeon[x - 1, y - 1] != 0)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-    //던전 생성 전 초기화==============================================================================================
-    void Dungeon_Initialization(Dungeon dungeon)
-    {
-        int[,] dungeon_Tilemap_Layer1 = dungeon.dungeon_Tilemap_Layer1;
-        for (int x = 0; x < dungeon_Tilemap_Layer1.GetLength(0) - 1; x++)
-        {
-            for (int y = 0; y < dungeon_Tilemap_Layer1.GetLength(1) - 1; y++)
-            {
-                //가장자리는 항상 0
-                if (x == 0 || x == dungeon_Tilemap_Layer1.GetLength(0) - 2 ||
-                    y == 0 || y == dungeon_Tilemap_Layer1.GetLength(1) - 2)
-                {
-                    dungeon.dungeon_Tilemap_Layer1[x, y] = 0;
-                }
-                else
-                {
-                    dungeon.dungeon_Tilemap_Layer1[x, y] = -1;
-                }
-            }
-        }
-    }
-    //던전 그래픽 생성=================================================================================================
+    //테스트 렌더링=================================================================================================
     void Dungeon_Instantiate(Dungeon dungeon)
     {
-        int[,] dungeon_Tilemap_Layer1 = dungeon.dungeon_Tilemap_Layer1;
-        int[,] dungeon_Tilemap_Layer3 = dungeon.dungeon_Tilemap_Layer3;
-        for (int x = 0; x < dungeon_Tilemap_Layer1.GetLength(0) - 1; x++)
+        int[,] dungeon_Tilemap_Layer1 = dungeon.layer1;
+        int[,] dungeon_Tilemap_Layer3 = dungeon.layer3;
+        for (int x = 1; x < dungeon.layer1.GetLength(0) - 1; x++)
         {
-            for (int y = 0; y < dungeon_Tilemap_Layer1.GetLength(1) - 1; y++)
+            for (int y = 1; y < dungeon.layer1.GetLength(1) - 1; y++)
             {
                 //벽부분 렌더링
                 if (dungeon_Tilemap_Layer1[x, y] == 0)
@@ -219,8 +157,8 @@ public class Instance_Dungeon : MonoBehaviour
                     }
                     try
                     {
-                        if (x != 0 && x != dungeon_Tilemap_Layer1.GetLength(0) - 1 &&
-                            y != 0 && y != dungeon_Tilemap_Layer1.GetLength(1) - 1)
+                        if (x != 0 && x != dungeon_Tilemap_Layer1.GetLength(0) &&
+                            y != 0 && y != dungeon_Tilemap_Layer1.GetLength(1))
                         {
                             //1면이 바닥
                             if (dungeon_Tilemap_Layer1[x + 1, y] != 0 &&
@@ -339,19 +277,6 @@ public class Instance_Dungeon : MonoBehaviour
                                 instance.GetComponent<SpriteRenderer>().sprite = tile_List[9].GetComponent<SpriteRenderer>().sprite;
                             }
                         }
-                        
-                        //가장자리 보정
-                        if (dungeon_Tilemap_Layer1[x + 1, y] != 0 &&
-                            x == 0)
-                        {
-                            instance.GetComponent<SpriteRenderer>().sprite = tile_List[0].GetComponent<SpriteRenderer>().sprite;
-                        }
-                        if (dungeon_Tilemap_Layer1[x, y + 1] != 0 &&
-                            y == 0)
-                        {
-                            instance.GetComponent<SpriteRenderer>().sprite = tile_List[13].GetComponent<SpriteRenderer>().sprite;
-                        }
-
                     }
                     catch(NullReferenceException)
                     {
@@ -427,74 +352,5 @@ public class Instance_Dungeon : MonoBehaviour
                 }
             }
         }
-    }
-    //입구와 출구 생성=================================================================================================
-    void Dungeon_Enter_And_Exit(Dungeon dungeon)
-    {
-        int[,] dungeon_Tilemap_Layer1 = dungeon.dungeon_Tilemap_Layer1;
-        int[,] dungeon_Tilemap_Layer3 = dungeon.dungeon_Tilemap_Layer3;
-        int enter_x = 0, enter_y = 0, exit_x = 0, exit_y = 0;
-        //맵의 외곽에 입구 생성
-        while (true)
-        {
-            enter_x = UnityEngine.Random.Range(0, dungeon_Tilemap_Layer1.GetLength(0));
-            enter_y = UnityEngine.Random.Range(0, dungeon_Tilemap_Layer1.GetLength(1));
-
-            if (dungeon_Tilemap_Layer1[enter_x, enter_y] != 0
-                && (enter_x < dungeon_Tilemap_Layer1.GetLength(0) / 4
-                || enter_x > dungeon_Tilemap_Layer1.GetLength(0) * 3 / 4)
-                || (enter_y < dungeon_Tilemap_Layer1.GetLength(1) / 4
-                || enter_y > dungeon_Tilemap_Layer1.GetLength(1) * 3 / 4))
-            {
-                if (Dungeon_Search(dungeon_Tilemap_Layer1, enter_x, enter_y) > 7)
-                {
-                    dungeon_Tilemap_Layer3[enter_x, enter_y] = 1;
-                    Debug.Log(enter_x + ", " + enter_y);
-                    break;
-                }
-            }
-        }
-        //입구의 반대편에 출구 생성
-        while (true)
-        {
-            exit_x = UnityEngine.Random.Range(0, dungeon_Tilemap_Layer1.GetLength(0));
-            exit_y = UnityEngine.Random.Range(0, dungeon_Tilemap_Layer1.GetLength(1));
-
-            if (dungeon_Tilemap_Layer1[exit_x, exit_y] != 0
-                && ((exit_x < dungeon_Tilemap_Layer1.GetLength(0) / 4
-                && enter_x > dungeon_Tilemap_Layer1.GetLength(0) * 3 / 4)
-                || (exit_x > dungeon_Tilemap_Layer1.GetLength(0) * 3 / 4
-                && enter_x < dungeon_Tilemap_Layer1.GetLength(0) / 4))
-                    || ((exit_y < dungeon_Tilemap_Layer1.GetLength(1) / 4
-                && enter_y > dungeon_Tilemap_Layer1.GetLength(1) * 3 / 4)
-                || (exit_y > dungeon_Tilemap_Layer1.GetLength(1) * 3 / 4)
-                && enter_y < dungeon_Tilemap_Layer1.GetLength(1) / 4))
-            {
-                if (Dungeon_Search(dungeon_Tilemap_Layer1, exit_x, exit_y) > 7)
-                {
-                    dungeon_Tilemap_Layer3[exit_x, exit_y] = 2;
-                    Debug.Log(exit_x + ", " + exit_y);
-                    break;
-                }
-
-            }
-        }
-        try
-        {
-            checkNode = Astar_Pathfinder.Pathfinder(dungeon_Tilemap_Layer1, new Vector2Int(enter_x, enter_y), new Vector2Int(exit_x, exit_y));
-        }
-        catch (NullReferenceException)
-        {
-
-        }
-        //플레이어의 위치 초기화
-        player.GetComponent<Player_AI>().x = enter_x;
-        player.GetComponent<Player_AI>().y = enter_y;
-        player.GetComponent<Player_AI>().dungeon = dungeon.dungeon_Tilemap_Layer1;
-        player.GetComponent<Player_AI>().Start_Position();
-    }
-    void Monster_Spawn(Dungeon dungeon)
-    {
-        
     }
 }

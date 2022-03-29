@@ -11,9 +11,38 @@ public class GameData_Script : MonoBehaviour
 [Serializable]
 public class GameData
 {
-    public List<Guild> guild_List = new List<Guild>();
-    public List<Dungeon> dungeon_Data = new List<Dungeon>();
+    public static int year;
+    public static int month;
+    public static int turn;
+    public static List<Clan> clan_List = new List<Clan>();
+    public static List<Party> party_List = new List<Party>();
+    public static List<Unit> Unit_List = new List<Unit>();
+    public static List<Dungeon> dungeon_Data = new List<Dungeon>();
+
+    public static Dictionary<string, Party> party_Dict = new Dictionary<string, Party>();
+
+    public static int dungeon_floor;
     public static string language = "KR";
+    //리스트 -> 딕셔너리
+    public static void List_To_Dict()
+    {
+        party_Dict = new Dictionary<string, Party>();
+
+        foreach (var list in party_List)
+        {
+            party_Dict.Add(list.party_Code, list);
+        }
+    }
+    //딕셔너리 -> 리스트
+    public static void Dict_To_List()
+    {
+        party_List = new List<Party>();
+
+        foreach(var dict in party_Dict)
+        {
+            party_List.Add(dict.Value);
+        }
+    }
 }
 [Serializable]
 public struct DataBase
@@ -22,58 +51,56 @@ public struct DataBase
     public List<Item> item_DB;
 }
 [Serializable]
-public class Guild
+public class Clan
 {
-    public string guild_Code;                   //길드 코드
-    public string guild_Name;                   //길드 이름
-    public Image guild_Image;                   //길드 이미지
-    public Guild_Master guild_Master;           //길드 마스터
-    public List<Party> guild_Party_List         //길드에 구성된 파티
-        = new List<Party>();
-    public int guild_Money;                     //길드가 소유한 재화
-    public List<Item> guild_Item                //길드가 소유한 아이템
+    public string clan_Code;                   //클랜 코드
+    public string clan_Name;                   //클랜 이름
+    public Image clan_Image;                   //클랜 이미지
+    public string clan_Master_Code;            //클랜 마스터의 코드
+    public List<string> clan_Manager_Code_List //클랜 매니저 코드 리스트
+        = new List<string>();
+    public List<string> clan_Unit_Code_List    //클랜에 소속된 유닛 코드 리스트(마스터, 매니저 포함)
+        = new List<string>();
+    public List<string> clan_Party_Code_List   //클랜에 소속된 파티 코드 리스트
+        = new List<string>();
+    public int clan_Money;                     //클랜이 소유한 재화
+    public List<Item> clan_Item                //클랜이 소유한 아이템
         = new List<Item>();
-    public List<Party> player_Guild_Party_List; //길드에 구성된 파티
-}
-[Serializable]
-public class Guild_Master
-{
-    Unit unit;
 }
 [Serializable]
 public class Party
 {
+    public string party_Code;                   //파티 코드
     public string party_Name;                   //파티 이름
-    public List<Unit> frontline                 //파티전열
-        = new List<Unit>();
-    public List<Unit> backline                  //파티후열
-        = new List<Unit>();
-    public int party_Power;                     //파티 전투력(임시:6가지 능력치 + 2가지 방어력)
+    public string party_Leader_Code;            //파티 리더
+    public List<string> party_Member            //파티 멤버(리더 포함)
+        = new List<string>();
+    public List<string> party_Front_Code        //파티 전열
+        = new List<string>();
+    public List<string> party_Back_Code         //파티 후열
+        = new List<string>();
+    public int party_Power;                     //파티 전투력(모든 유닛의 전투력 합)
     public int party_pos_x, party_pos_y;        //파티 위치
-    public int party_Sight                      //파티 시야
-    {
-        get
-        {
-            return 5;
-        }
-    }
+    public int party_Sight;                     //파티 시야(시야가 가장 높은 유닛의 시야)
+    public List<Node> party_Path_List           //파티가 이동할 경로
+        = new List<Node>();
 }
 [Serializable]
 public class Unit : Status
 {
-    public string unit_Code;                    //유닛의 코드
-    public string unit_Name;                    //유닛의 이름
-    public string unit_Species;                 //유닛의 종족
-    public string unit_Faction;                 //유닛의 팩션
-    public string unit_Character;               //유닛의 성격
+    public string code;                    //유닛의 코드
+    public string name;                    //유닛의 이름
+    public string species;                 //유닛의 종족
+    public string faction;                 //유닛의 팩션
+    public string character;               //유닛의 성격
 
-    public Sprite unit_Base_Sprite;             //유닛의 베이스 이미지
-    public Sprite unit_Hair_Sprite;             //유닛의 머리스타일 이미지
-    public Sprite unit_Eyes_Sprite;             //유닛의 눈 이미지
-    public Sprite unit_Head_Sprite;             //유닛의 머리보호구 이미지
-    public Sprite unit_Body_Sprite;             //유닛의 몸통보호구 이미지
-    public Sprite unit_Weapon_1_Sprite;         //유닛의 무기 이미지1
-    public Sprite unit_Weapon_2_Sprite;         //유닛의 무기 이미지2
+    public Sprite sprite_Base;             //유닛의 베이스 이미지
+    public Sprite sprite_Hair;             //유닛의 머리스타일 이미지
+    public Sprite sprite_Eyes;             //유닛의 눈 이미지
+    public Sprite sprite_Head;             //유닛의 머리보호구 이미지
+    public Sprite sprite_Body;             //유닛의 몸통보호구 이미지
+    public Sprite sprite_Weapon_1;         //유닛의 무기 이미지1
+    public Sprite sprite_Weapon_2;         //유닛의 무기 이미지2
     
     public Item unit_Head_Item;                 //유닛의 머리보호구 
     public Item unit_Body_Item;                 //유닛의 몸통보호구 
@@ -102,7 +129,7 @@ public class Status
     public int pt_INT, pt_WIS, pt_WIL;          //정신 능력치 가중치(평균 10)
     public int df_Physical, df_Magic;           //방어력(받은 피해량 = 데미지 * 추가 - 방어력)
     public int sight, search_Type;              //시야(벽에 가려지지 않은 범위 내의 타일을 랜더링함), 주 감각기관(시각, 청각, 후각, 육감)
-    //레벨 업 함수
+    //레벨 업
     public void Level_UP()
     {
         if (max_EXP <= pool_EXP && level < 10)
@@ -143,28 +170,25 @@ public class Status
 [Serializable]
 public class Item
 {
-    public string item_Code;                    //아이템 코드
-    public string item_Name;                    //아이템 이름
-    public Image item_Image;                    //아이템 이미지
-    public string item_Type;                    //아이템 타입(장비형, 소모형)
-    public float item_Weight;                   //아이템 무게
-    public int item_Max_Durability;             //아이템 최대 내구도
-    public int item_Left_Durability;            //아이템 남은 내구도(0이 되면 소멸함)
-    public string item_Info;                    //아이템 정보(텍스트 정보)
-    public string item_Need;                    //아이템 (착용/사용) 조건
-    public string item_Effect;                  //아이템 (착용/사용) 효과
+    public string code;                         //아이템 코드
+    public string name;                         //아이템 이름
+    public Sprite sprite_Item;                  //아이템 이미지
+    public string type;                         //아이템 타입(장비형, 소모형)
+    public float weight;                        //아이템 무게
+    public int max_Durability;                  //아이템 최대 내구도
+    public int left_Durability;                 //아이템 남은 내구도(0이 되면 소멸함)
+    public string info;                         //아이템 정보(텍스트 정보)
+    public string need;                         //아이템 (착용/사용) 조건
+    public string effect;                       //아이템 (착용/사용) 효과
 }
 [Serializable]
 public class Dungeon
 {
-    public string dungeon_Type;                 //던전 타입
-    public List<Party> in_Dungeon_Party;        //던전 안에 있는 파티
-    public int[,]                               //던전 레이어 1(바닥)
-        dungeon_Tilemap_Layer1;
-    public int[,]                               //던전 레이어 2(벽)
-        dungeon_Tilemap_Layer2;
-    public int[,]                               //던전 레이어 3(오브젝트)
-        dungeon_Tilemap_Layer3;
-    public int[,]                               //던전 레이어 4(유닛)
-        dungeon_Tilemap_Layer4;
+    public string type;                         //던전 타입
+    public List<string> in_Party                //던전 안에 있는 파티의 코드
+        = new List<string>();
+    public int[,] layer1;                       //레이어 1(바닥)
+    public int[,] layer2;                       //레이어 2(벽)
+    public int[,] layer3;                       //레이어 3(오브젝트)
+    public int[,] layer4;                       //레이어 4(유닛)
 }

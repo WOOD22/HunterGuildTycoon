@@ -25,6 +25,7 @@ public class Node
 
 public class Astar_Pathfinder : MonoBehaviour
 {
+    
     public List<Node> openList = new List<Node>();
     public List<Node> closeList = new List<Node>();
     public List<Node> finalList = new List<Node>();
@@ -98,7 +99,7 @@ public class Astar_Pathfinder : MonoBehaviour
             OpenListAdd(current_Node.x - 1, current_Node.y - 1);
             
         }
-
+        //
         return finalList;
 
         void OpenListAdd(int x, int y)
@@ -123,6 +124,7 @@ public class Astar_Pathfinder : MonoBehaviour
         {
             node.h = (Mathf.Abs(node.x - end_Node.x) + Mathf.Abs(node.y - end_Node.y)) * 10;
         }
+        //경로 그리기
         void OnDrawGizmos()
         {
             if (finalList.Count != 0)
