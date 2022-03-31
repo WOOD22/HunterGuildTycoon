@@ -64,7 +64,7 @@ public class Instance_Dungeon : MonoBehaviour
                         }
                         else if (random != 0)
                         {
-                            dungeon.layer1[x, y] = UnityEngine.Random.Range(1, 2 + 1);
+                            dungeon.layer1[x, y] = 1;
                         }
                     }
                 }
@@ -81,7 +81,7 @@ public class Instance_Dungeon : MonoBehaviour
                             //주변 8칸 중 5칸 타일이면 타일로 변경
                             if (Dungeon_Function.Tile_Search(dungeon.layer1, true, x, y) > 5)
                             {
-                                dungeon.layer1[x, y] = UnityEngine.Random.Range(1, 3);
+                                dungeon.layer1[x, y] = 1;
                             }
                         }
                     }

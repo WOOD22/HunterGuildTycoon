@@ -122,14 +122,7 @@ public class Dungeon_Function
                     Debug.Log(exit_x + ", " + exit_y);
                     break;
                 }
-
             }
         }
-    }
-    //플레이어의 포지션 이동
-    public static void Player_Pos(int x, int y)
-    {
-        Player_AI.x = x;
-        Player_AI.y = y;
     }
 }
