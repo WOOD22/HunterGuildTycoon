@@ -97,6 +97,7 @@ public class Instance_Dungeon : MonoBehaviour
                     }
                 }
             }
+            Dungeon_Function.Largest_Space(dungeon);
             //涝备 免备 积己
             Dungeon_Function.Far_Enter_And_Exit(dungeon);
 

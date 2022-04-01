@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Dungeon_Function
 {
@@ -121,6 +122,101 @@ public class Dungeon_Function
                     dungeon.layer3[exit_x, exit_y] = 2;
                     Debug.Log(exit_x + ", " + exit_y);
                     break;
+                }
+            }
+        }
+    }
+    //랜덤 맵 생성시 가장 큰 공간만 남기기
+    public static void Largest_Space(Dungeon dungeon)
+    {
+        List<int> space_List = new List<int>();
+        int[,] space_Layer = new int[dungeon.layer1.GetLength(0), dungeon.layer1.GetLength(1)];
+        bool is_change = true;
+        int num = 1;
+        for (int x = 1; x < space_Layer.GetLength(0) - 1; x++)
+        {
+            for (int y = 1; y < space_Layer.GetLength(1) - 1; y++)
+            {
+                if (dungeon.layer1[x, y] != 0)
+                {
+                    space_Layer[x, y] = num;
+                    num++;
+                }
+            }
+        }
+        
+        while (is_change)
+        {
+            is_change = false;
+            for (int x = 1; x < space_Layer.GetLength(0) - 1; x++)
+            {
+                for (int y = 1; y < space_Layer.GetLength(1) - 1; y++)
+                {
+                    if (space_Layer[x + 1, y] > space_Layer[x, y])
+                    {
+                        space_Layer[x + 1, y] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    if (space_Layer[x - 1, y] > space_Layer[x, y])
+                    {
+                        space_Layer[x - 1, y] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    if (space_Layer[x, y + 1] > space_Layer[x, y])
+                    {
+                        space_Layer[x, y + 1] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    if (space_Layer[x, y - 1] > space_Layer[x, y])
+                    {
+                        space_Layer[x, y - 1] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    //대각선
+                    if (space_Layer[x + 1, y + 1] > space_Layer[x, y])
+                    {
+                        space_Layer[x + 1, y + 1] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    if (space_Layer[x - 1, y + 1] > space_Layer[x, y])
+                    {
+                        space_Layer[x - 1, y + 1] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    if (space_Layer[x + 1, y - 1] > space_Layer[x, y])
+                    {
+                        space_Layer[x + 1, y - 1] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                    if (space_Layer[x - 1, y - 1] > space_Layer[x, y])
+                    {
+                        space_Layer[x - 1, y - 1] = space_Layer[x, y];
+                        is_change = true;
+                    }
+                }
+            }
+        }
+
+        for (int x = 1; x < space_Layer.GetLength(0) - 1; x++)
+        {
+            for (int y = 1; y < space_Layer.GetLength(1) - 1; y++)
+            {
+                if (space_Layer[x, y] != 0)
+                {
+                    space_List.Add(space_Layer[x, y]);
+                }
+            }
+        }
+
+        var mode = space_List.GroupBy(v => v).OrderByDescending(g => g.Count()).First();
+        Debug.Log(mode.Key);
+        for (int x = 1; x < space_Layer.GetLength(0) - 1; x++)
+        {
+            for (int y = 1; y < space_Layer.GetLength(1) - 1; y++)
+            {
+                if(space_Layer[x, y] != mode.Key)
+                {
+                    dungeon.layer1[x, y] = 0;
                 }
             }
         }
