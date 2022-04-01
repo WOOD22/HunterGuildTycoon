@@ -144,54 +144,59 @@ public class Dungeon_Function
                 }
             }
         }
-        
+        //0이 아닐때 주변의 큰 값과 동일하게 만든다.
         while (is_change)
         {
+            //변화가 없을 경우 루프 종료
             is_change = false;
             for (int x = 1; x < space_Layer.GetLength(0) - 1; x++)
             {
                 for (int y = 1; y < space_Layer.GetLength(1) - 1; y++)
                 {
-                    if (space_Layer[x + 1, y] > space_Layer[x, y])
+                    if (space_Layer[x, y] != 0)
                     {
-                        space_Layer[x + 1, y] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    if (space_Layer[x - 1, y] > space_Layer[x, y])
-                    {
-                        space_Layer[x - 1, y] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    if (space_Layer[x, y + 1] > space_Layer[x, y])
-                    {
-                        space_Layer[x, y + 1] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    if (space_Layer[x, y - 1] > space_Layer[x, y])
-                    {
-                        space_Layer[x, y - 1] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    //대각선
-                    if (space_Layer[x + 1, y + 1] > space_Layer[x, y])
-                    {
-                        space_Layer[x + 1, y + 1] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    if (space_Layer[x - 1, y + 1] > space_Layer[x, y])
-                    {
-                        space_Layer[x - 1, y + 1] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    if (space_Layer[x + 1, y - 1] > space_Layer[x, y])
-                    {
-                        space_Layer[x + 1, y - 1] = space_Layer[x, y];
-                        is_change = true;
-                    }
-                    if (space_Layer[x - 1, y - 1] > space_Layer[x, y])
-                    {
-                        space_Layer[x - 1, y - 1] = space_Layer[x, y];
-                        is_change = true;
+                        //십자선
+                        if (space_Layer[x, y] < space_Layer[x + 1, y])
+                        {
+                            space_Layer[x, y] = space_Layer[x + 1, y];
+                            is_change = true;
+                        }
+                        if (space_Layer[x, y] < space_Layer[x - 1, y])
+                        {
+                            space_Layer[x, y] = space_Layer[x - 1, y];
+                            is_change = true;
+                        }
+                        if (space_Layer[x, y] < space_Layer[x, y + 1])
+                        {
+                            space_Layer[x, y] = space_Layer[x, y + 1];
+                            is_change = true;
+                        }
+                        if (space_Layer[x, y] < space_Layer[x, y - 1])
+                        {
+                            space_Layer[x, y] = space_Layer[x, y - 1];
+                            is_change = true;
+                        }
+                        //대각선
+                        if (space_Layer[x, y] < space_Layer[x + 1, y + 1])
+                        {
+                            space_Layer[x, y] = space_Layer[x + 1, y + 1];
+                            is_change = true;
+                        }
+                        if (space_Layer[x, y] < space_Layer[x - 1, y + 1])
+                        {
+                            space_Layer[x, y] = space_Layer[x - 1, y + 1];
+                            is_change = true;
+                        }
+                        if (space_Layer[x, y] < space_Layer[x + 1, y - 1])
+                        {
+                            space_Layer[x, y] = space_Layer[x + 1, y - 1];
+                            is_change = true;
+                        }
+                        if (space_Layer[x, y] < space_Layer[x - 1, y - 1])
+                        {
+                            space_Layer[x, y] = space_Layer[x - 1, y - 1];
+                            is_change = true;
+                        }
                     }
                 }
             }
@@ -207,9 +212,9 @@ public class Dungeon_Function
                 }
             }
         }
-
+        //최빈값 구하기
         var mode = space_List.GroupBy(v => v).OrderByDescending(g => g.Count()).First();
-        Debug.Log(mode.Key);
+        //최빈값이 아닌 타일은 제거한다.
         for (int x = 1; x < space_Layer.GetLength(0) - 1; x++)
         {
             for (int y = 1; y < space_Layer.GetLength(1) - 1; y++)
