@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +7,11 @@ using System;
 public class GameData_Script : MonoBehaviour
 {
     public GameData gamedata;
+
+    void Start()
+    {
+        DataBase_Script.Load_DB();
+    }
 }
 [Serializable]
 public class GameData
@@ -23,7 +28,7 @@ public class GameData
 
     public static int dungeon_floor;
     public static string language = "KR";
-    //¸®½ºÆ® -> µñ¼Å³Ê¸®
+    //ë¦¬ìŠ¤íŠ¸ -> ë”•ì…”ë„ˆë¦¬
     public static void List_To_Dict()
     {
         party_Dict = new Dictionary<string, Party>();
@@ -33,7 +38,7 @@ public class GameData
             party_Dict.Add(list.party_Code, list);
         }
     }
-    //µñ¼Å³Ê¸® -> ¸®½ºÆ®
+    //ë”•ì…”ë„ˆë¦¬ -> ë¦¬ìŠ¤íŠ¸
     public static void Dict_To_List()
     {
         party_List = new List<Party>();
@@ -45,98 +50,100 @@ public class GameData
     }
 }
 [Serializable]
-public struct DataBase
-{
-    public List<Unit> unit_DB;
-    public List<Item> item_DB;
-}
-[Serializable]
 public class Clan
 {
-    public string clan_Code;                   //Å¬·£ ÄÚµå
-    public string clan_Name;                   //Å¬·£ ÀÌ¸§
-    public Image clan_Image;                   //Å¬·£ ÀÌ¹ÌÁö
-    public string clan_Master_Code;            //Å¬·£ ¸¶½ºÅÍÀÇ ÄÚµå
-    public List<string> clan_Manager_Code_List //Å¬·£ ¸Å´ÏÀú ÄÚµå ¸®½ºÆ®
+    public string clan_Code;                    //í´ëœ ì½”ë“œ
+    public string clan_Name;                    //í´ëœ ì´ë¦„
+    public Image clan_Image;                    //í´ëœ ì´ë¯¸ì§€
+    public string clan_Master_Code;             //í´ëœ ë§ˆìŠ¤í„°ì˜ ì½”ë“œ
+    public List<string> clan_Manager_Code_List  //í´ëœ ë§¤ë‹ˆì € ì½”ë“œ ë¦¬ìŠ¤íŠ¸
         = new List<string>();
-    public List<string> clan_Unit_Code_List    //Å¬·£¿¡ ¼Ò¼ÓµÈ À¯´Ö ÄÚµå ¸®½ºÆ®(¸¶½ºÅÍ, ¸Å´ÏÀú Æ÷ÇÔ)
+    public List<string> clan_Unit_Code_List     //í´ëœì— ì†Œì†ëœ ìœ ë‹› ì½”ë“œ ë¦¬ìŠ¤íŠ¸(ë§ˆìŠ¤í„°, ë§¤ë‹ˆì € í¬í•¨)
         = new List<string>();
-    public List<string> clan_Party_Code_List   //Å¬·£¿¡ ¼Ò¼ÓµÈ ÆÄÆ¼ ÄÚµå ¸®½ºÆ®
+    public List<string> clan_Party_Code_List    //í´ëœì— ì†Œì†ëœ íŒŒí‹° ì½”ë“œ ë¦¬ìŠ¤íŠ¸
         = new List<string>();
-    public int clan_Money;                     //Å¬·£ÀÌ ¼ÒÀ¯ÇÑ ÀçÈ­
-    public List<Item> clan_Item                //Å¬·£ÀÌ ¼ÒÀ¯ÇÑ ¾ÆÀÌÅÛ
+    public int clan_Money;                      //í´ëœì´ ì†Œìœ í•œ ì¬í™”
+    public List<Item> clan_Item                 //í´ëœì´ ì†Œìœ í•œ ì•„ì´í…œ
         = new List<Item>();
 }
 [Serializable]
 public class Party
 {
-    public string party_Code;                   //ÆÄÆ¼ ÄÚµå
-    public string party_Name;                   //ÆÄÆ¼ ÀÌ¸§
-    public string party_Leader_Code;            //ÆÄÆ¼ ¸®´õ
-    public List<string> party_Member            //ÆÄÆ¼ ¸â¹ö(¸®´õ Æ÷ÇÔ)
+    public string party_Code;                   //íŒŒí‹° ì½”ë“œ
+    public string party_Name;                   //íŒŒí‹° ì´ë¦„
+    public string party_Leader_Code;            //íŒŒí‹° ë¦¬ë”
+    public List<string> party_Member            //íŒŒí‹° ë©¤ë²„(ë¦¬ë” í¬í•¨)
         = new List<string>();
-    public List<string> party_Front_Code        //ÆÄÆ¼ Àü¿­
+    public List<string> party_Front_Code        //íŒŒí‹° ì „ì—´
         = new List<string>();
-    public List<string> party_Back_Code         //ÆÄÆ¼ ÈÄ¿­
+    public List<string> party_Back_Code         //íŒŒí‹° í›„ì—´
         = new List<string>();
-    public int party_Power;                     //ÆÄÆ¼ ÀüÅõ·Â(¸ğµç À¯´ÖÀÇ ÀüÅõ·Â ÇÕ)
-    public int party_pos_x, party_pos_y;        //ÆÄÆ¼ À§Ä¡
-    public int party_Sight;                     //ÆÄÆ¼ ½Ã¾ß(½Ã¾ß°¡ °¡Àå ³ôÀº À¯´ÖÀÇ ½Ã¾ß)
-    public List<Node> party_Path_List           //ÆÄÆ¼°¡ ÀÌµ¿ÇÒ °æ·Î
+    public int party_Power;                     //íŒŒí‹° ì „íˆ¬ë ¥(ëª¨ë“  ìœ ë‹›ì˜ ì „íˆ¬ë ¥ í•©)
+    public int party_pos_x, party_pos_y;        //íŒŒí‹° ìœ„ì¹˜
+    public int party_Sight;                     //íŒŒí‹° ì‹œì•¼(ì‹œì•¼ê°€ ê°€ì¥ ë†’ì€ ìœ ë‹›ì˜ ì‹œì•¼)
+    public List<Node> party_Path_List           //íŒŒí‹°ê°€ ì´ë™í•  ê²½ë¡œ
         = new List<Node>();
+    public List<Item> party_Item_List           //íŒŒí‹°ê°€ ì†Œìœ í•œ ì•„ì´í…œ
+        = new List<Item>();
 }
 [Serializable]
 public class Unit : Status
 {
-    public string code;                    //À¯´ÖÀÇ ÄÚµå
-    public string name;                    //À¯´ÖÀÇ ÀÌ¸§
-    public string species;                 //À¯´ÖÀÇ Á¾Á·
-    public string faction;                 //À¯´ÖÀÇ ÆÑ¼Ç
-    public string character;               //À¯´ÖÀÇ ¼º°İ
+    public string code;                         //ìœ ë‹›ì˜ ì½”ë“œ
+    public string name;                         //ìœ ë‹›ì˜ ì´ë¦„
+    public string species;                      //ìœ ë‹›ì˜ ì¢…ì¡±
+    public string faction;                      //ìœ ë‹›ì˜ íŒ©ì…˜
+    public string character;                    //ìœ ë‹›ì˜ ì„±ê²©
 
-    public Sprite sprite_Base;             //À¯´ÖÀÇ º£ÀÌ½º ÀÌ¹ÌÁö
-    public Sprite sprite_Hair;             //À¯´ÖÀÇ ¸Ó¸®½ºÅ¸ÀÏ ÀÌ¹ÌÁö
-    public Sprite sprite_Eyes;             //À¯´ÖÀÇ ´« ÀÌ¹ÌÁö
-    public Sprite sprite_Head;             //À¯´ÖÀÇ ¸Ó¸®º¸È£±¸ ÀÌ¹ÌÁö
-    public Sprite sprite_Body;             //À¯´ÖÀÇ ¸öÅëº¸È£±¸ ÀÌ¹ÌÁö
-    public Sprite sprite_Weapon_1;         //À¯´ÖÀÇ ¹«±â ÀÌ¹ÌÁö1
-    public Sprite sprite_Weapon_2;         //À¯´ÖÀÇ ¹«±â ÀÌ¹ÌÁö2
+    public string skill_Type;
+    public string attack_Type;
+
+    public Sprite sprite_Base;                  //ìœ ë‹›ì˜ ë² ì´ìŠ¤ ì´ë¯¸ì§€
+    public Sprite sprite_Hair;                  //ìœ ë‹›ì˜ ë¨¸ë¦¬ìŠ¤íƒ€ì¼ ì´ë¯¸ì§€
+    public Sprite sprite_Eyes;                  //ìœ ë‹›ì˜ ëˆˆ ì´ë¯¸ì§€
+    public Sprite sprite_Head;                  //ìœ ë‹›ì˜ ë¨¸ë¦¬ë³´í˜¸êµ¬ ì´ë¯¸ì§€
+    public Sprite sprite_Body;                  //ìœ ë‹›ì˜ ëª¸í†µë³´í˜¸êµ¬ ì´ë¯¸ì§€
+    public Sprite sprite_Weapon_1;              //ìœ ë‹›ì˜ ë¬´ê¸° ì´ë¯¸ì§€1
+    public Sprite sprite_Weapon_2;              //ìœ ë‹›ì˜ ë¬´ê¸° ì´ë¯¸ì§€2
     
-    public Item unit_Head_Item;                 //À¯´ÖÀÇ ¸Ó¸®º¸È£±¸ 
-    public Item unit_Body_Item;                 //À¯´ÖÀÇ ¸öÅëº¸È£±¸ 
-    public Item unit_Weapon_1_Item;             //À¯´ÖÀÇ ¹«±â1 
-    public Item unit_Weapon_2_Item;             //À¯´ÖÀÇ ¹«±â2
-    public Item unit_Accessory_1_Item;          //À¯´ÖÀÇ Àå½Å±¸1
-    public Item unit_Accessory_2_Item;          //À¯´ÖÀÇ Àå½Å±¸2
+    public Item unit_Head_Item;                 //ìœ ë‹›ì˜ ë¨¸ë¦¬ë³´í˜¸êµ¬ 
+    public Item unit_Body_Item;                 //ìœ ë‹›ì˜ ëª¸í†µë³´í˜¸êµ¬ 
+    public Item unit_Weapon_1_Item;             //ìœ ë‹›ì˜ ë¬´ê¸°1 
+    public Item unit_Weapon_2_Item;             //ìœ ë‹›ì˜ ë¬´ê¸°2
+    public Item unit_Accessory_1_Item;          //ìœ ë‹›ì˜ ì¥ì‹ êµ¬1
+    public Item unit_Accessory_2_Item;          //ìœ ë‹›ì˜ ì¥ì‹ êµ¬2
 
-    public List<Item> unit_Item_List;           //À¯´ÖÀÌ ¼ÒÀ¯ÇÑ ¾ÆÀÌÅÛ
+    //public List<Item> unit_Item_List;           //ìœ ë‹›ì´ ì†Œìœ í•œ ì•„ì´í…œ
 }
 [Serializable]
 public class Status
 {
-    public int level;                           //·¹º§¾÷ ½Ã °¡ÁßÄ¡ ºñ·Ê ·£´ı ´É·ÂÄ¡ »ó½Â(¸¸·¾ 10)
-    public int max_EXP, pool_EXP;               //°æÇèÄ¡
-    public int max_HP, left_HP;                 //Health PointÀÇ ¾àÀÚ(±âº» 200)
-    public int max_MP, left_MP;                 //Morale PointÀÇ ¾àÀÚ(±âº» 100)
-    public int max_SC, pool_SC;                 //Skill ChanceÀÇ ¾àÀÚ(½ºÅ³ ÇüÅÂ µû¸§)
-    public int max_AC, pool_AC;                 //Attack ChanceÀÇ ¾àÀÚ(°ø°İ ÇüÅÂ µû¸§)
-    public int max_Hunger, left_Hunger;         //0¿¡ °¡±î¿ï¼ö·Ï ¹è°íÇÄ(¸ğµÎ ¼ÒÁø ½Ã HP ¼Ò¸ğ)
-    public int max_Sleep, left_Sleep;           //0¿¡ °¡±î¿ï¼ö·Ï Á¹¸²(¸ğµÎ ¼ÒÁø ½Ã MP ¼Ò¸ğ)
-    public float max_WT, pool_WT;               //WeightÀÇ ¾àÀÚ
-    public int st_STR, st_DEX, st_CON;          //½ÅÃ¼ ´É·ÂÄ¡(Æò±Õ 10)
-    public int st_INT, st_WIS, st_WIL;          //Á¤½Å ´É·ÂÄ¡(Æò±Õ 10)
-    public int pt_STR, pt_DEX, pt_CON;          //½ÅÃ¼ ´É·ÂÄ¡ °¡ÁßÄ¡(Æò±Õ 10)
-    public int pt_INT, pt_WIS, pt_WIL;          //Á¤½Å ´É·ÂÄ¡ °¡ÁßÄ¡(Æò±Õ 10)
-    public int df_Physical, df_Magic;           //¹æ¾î·Â(¹ŞÀº ÇÇÇØ·® = µ¥¹ÌÁö * Ãß°¡ - ¹æ¾î·Â)
-    public int sight, search_Type;              //½Ã¾ß(º®¿¡ °¡·ÁÁöÁö ¾ÊÀº ¹üÀ§ ³»ÀÇ Å¸ÀÏÀ» ·£´õ¸µÇÔ), ÁÖ °¨°¢±â°ü(½Ã°¢, Ã»°¢, ÈÄ°¢, À°°¨)
-    //·¹º§ ¾÷
+    public int level;                           //ë ˆë²¨ì—… ì‹œ ê°€ì¤‘ì¹˜ ë¹„ë¡€ ëœë¤ ëŠ¥ë ¥ì¹˜ ìƒìŠ¹(ë§Œë ™ 10)
+    public int max_EXP, pool_EXP;               //ê²½í—˜ì¹˜
+    public int max_HP, left_HP;                 //Health Pointì˜ ì•½ì(ê¸°ë³¸ 200)
+    public int max_MP, left_MP;                 //Morale Pointì˜ ì•½ì(ê¸°ë³¸ 100)
+    public int max_SC, pool_SC;                 //Skill Chanceì˜ ì•½ì(ìŠ¤í‚¬ í˜•íƒœ ë”°ë¦„)
+    public int max_AC, pool_AC;                 //Attack Chanceì˜ ì•½ì(ê³µê²© í˜•íƒœ ë”°ë¦„)
+    public int max_Hunger, left_Hunger;         //0ì— ê°€ê¹Œìš¸ìˆ˜ë¡ ë°°ê³ í””(ëª¨ë‘ ì†Œì§„ ì‹œ HP ì†Œëª¨)
+    public int max_Thirst, left_Thirst;         //0ì— ê°€ê¹Œìš¸ìˆ˜ë¡ ëª©ë§ˆë¦„(ëª¨ë‘ ì†Œì§„ ì‹œ HP ì†Œëª¨)
+    public int max_Sleep, left_Sleep;           //0ì— ê°€ê¹Œìš¸ìˆ˜ë¡ ì¡¸ë¦¼(ëª¨ë‘ ì†Œì§„ ì‹œ MP ì†Œëª¨)
+    public float max_WT, pool_WT;               //Weightì˜ ì•½ì
+    public int st_STR, st_DEX, st_CON;          //ì‹ ì²´ ëŠ¥ë ¥ì¹˜(í‰ê·  10)
+    public int st_INT, st_WIS, st_WIL;          //ì •ì‹  ëŠ¥ë ¥ì¹˜(í‰ê·  10)
+    public int pt_STR, pt_DEX, pt_CON;          //ì‹ ì²´ ëŠ¥ë ¥ì¹˜ ê°€ì¤‘ì¹˜(í‰ê·  10)
+    public int pt_INT, pt_WIS, pt_WIL;          //ì •ì‹  ëŠ¥ë ¥ì¹˜ ê°€ì¤‘ì¹˜(í‰ê·  10)
+    public int df_Physical, df_Magic;           //ë°©ì–´ë ¥(ë°›ì€ í”¼í•´ëŸ‰ = ë°ë¯¸ì§€ * ì¶”ê°€ - ë°©ì–´ë ¥)
+    public List<string> condition               //ë²„í”„, ìƒíƒœì´ìƒ ë“± ìœ ë‹›ì—ê²Œ ì˜í–¥ì„ ë¯¸ì¹˜ëŠ” ëª¨ë“  ê²ƒ
+        = new List<string>();
+    public int sight, search_Type;              //ì‹œì•¼(ë²½ì— ê°€ë ¤ì§€ì§€ ì•Šì€ ë²”ìœ„ ë‚´ì˜ íƒ€ì¼ì„ ëœë”ë§í•¨), ì£¼ ê°ê°ê¸°ê´€(ì‹œê°, ì²­ê°, í›„ê°, ìœ¡ê°)
+    //ë ˆë²¨ ì—…
     public void Level_UP()
     {
         if (max_EXP <= pool_EXP && level < 10)
         {
             level++;
 
-            int random_UP =                     //·¹º§¾÷ ½Ã °¡ÁßÄ¡ ºñ·Ê ·£´ı ´É·ÂÄ¡ »ó½Â
+            int random_UP =                     //ë ˆë²¨ì—… ì‹œ ê°€ì¤‘ì¹˜ ë¹„ë¡€ ëœë¤ ëŠ¥ë ¥ì¹˜ ìƒìŠ¹
                 UnityEngine.Random.Range
                 (1, (pt_STR + pt_DEX + pt_CON + pt_INT + pt_WIS + pt_WIL) + 1);
 
@@ -168,27 +175,53 @@ public class Status
     }
 }
 [Serializable]
+public class Skill_Class
+{
+    public string code;
+    public string name;
+    public Sprite sprite_Skill;
+    public string type;
+    public List<string> need
+        = new List<string>();
+    public List<string> effect
+        = new List<string>();
+}
+[Serializable]
+public class Atteck_Class
+{
+    public string code;
+    public string name;
+    public Sprite sprite_Atteck;
+    public string type;
+    public List<string> need
+        = new List<string>();
+    public List<string> effect
+        = new List<string>();
+}
+[Serializable]
 public class Item
 {
-    public string code;                         //¾ÆÀÌÅÛ ÄÚµå
-    public string name;                         //¾ÆÀÌÅÛ ÀÌ¸§
-    public Sprite sprite_Item;                  //¾ÆÀÌÅÛ ÀÌ¹ÌÁö
-    public string type;                         //¾ÆÀÌÅÛ Å¸ÀÔ(ÀåºñÇü, ¼Ò¸ğÇü)
-    public float weight;                        //¾ÆÀÌÅÛ ¹«°Ô
-    public int max_Durability;                  //¾ÆÀÌÅÛ ÃÖ´ë ³»±¸µµ
-    public int left_Durability;                 //¾ÆÀÌÅÛ ³²Àº ³»±¸µµ(0ÀÌ µÇ¸é ¼Ò¸êÇÔ)
-    public string info;                         //¾ÆÀÌÅÛ Á¤º¸(ÅØ½ºÆ® Á¤º¸)
-    public string need;                         //¾ÆÀÌÅÛ (Âø¿ë/»ç¿ë) Á¶°Ç
-    public string effect;                       //¾ÆÀÌÅÛ (Âø¿ë/»ç¿ë) È¿°ú
+    public string code;                         //ì•„ì´í…œ ì½”ë“œ
+    public string name;                         //ì•„ì´í…œ ì´ë¦„
+    public Sprite sprite_Item;                  //ì•„ì´í…œ ì´ë¯¸ì§€
+    public string type;                         //ì•„ì´í…œ íƒ€ì…(ì¥ë¹„í˜•, ì†Œëª¨í˜•)
+    public float weight;                        //ì•„ì´í…œ ë¬´ê²Œ
+    public int max_Durability;                  //ì•„ì´í…œ ìµœëŒ€ ë‚´êµ¬ë„
+    public int left_Durability;                 //ì•„ì´í…œ ë‚¨ì€ ë‚´êµ¬ë„(0ì´ ë˜ë©´ ì†Œë©¸í•¨)
+    public string info;                         //ì•„ì´í…œ ì •ë³´(í…ìŠ¤íŠ¸ ì •ë³´)
+    public List<string> need                    //ì•„ì´í…œ (ì°©ìš©/ì‚¬ìš©) ì¡°ê±´
+        = new List<string>();
+    public List<string> effect                  //ì•„ì´í…œ (ì°©ìš©/ì‚¬ìš©) íš¨ê³¼
+        = new List<string>();
 }
 [Serializable]
 public class Dungeon
 {
-    public string type;                         //´øÀü Å¸ÀÔ
-    public List<string> in_Party                //´øÀü ¾È¿¡ ÀÖ´Â ÆÄÆ¼ÀÇ ÄÚµå
+    public string type;                         //ë˜ì „ íƒ€ì…
+    public List<string> in_Party                //ë˜ì „ ì•ˆì— ìˆëŠ” íŒŒí‹°ì˜ ì½”ë“œ
         = new List<string>();
-    public int[,] layer1;                       //·¹ÀÌ¾î 1(¹Ù´Ú)
-    public int[,] layer2;                       //·¹ÀÌ¾î 2(º®)
-    public int[,] layer3;                       //·¹ÀÌ¾î 3(¿ÀºêÁ§Æ®)
-    public int[,] layer4;                       //·¹ÀÌ¾î 4(À¯´Ö)
+    public int[,] layer1;                       //ë ˆì´ì–´ 1(ë°”ë‹¥)
+    public int[,] layer2;                       //ë ˆì´ì–´ 2(ë²½)
+    public int[,] layer3;                       //ë ˆì´ì–´ 3(ì˜¤ë¸Œì íŠ¸)
+    public int[,] layer4;                       //ë ˆì´ì–´ 4(ìœ ë‹›)
 }

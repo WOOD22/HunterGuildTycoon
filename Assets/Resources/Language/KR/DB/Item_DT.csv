@@ -1,0 +1,3 @@
+﻿code,name,image,type,weight,durability,info,need,effect
+IT0001,장검,,weapon,2,32,"평범한 검, 날카롭다.",#STR:8,#Sword
+IT0002,바게트,,food,1,8,기다란 바게트,#Hunger<100,#Hunger+10

@@ -114,6 +114,7 @@ public class Instance_Dungeon : MonoBehaviour
                         {
                             enter_x = x;
                             enter_y = y;
+                            player.GetComponent<Player>().Start_Position(dungeon, enter_x, enter_y);
                         }
                         if (dungeon.layer3[x, y] == 2)
                         {
