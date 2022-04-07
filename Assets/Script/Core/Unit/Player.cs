@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public GameObject player;
     public Party party;
+    public GameObject inventory;
     Dungeon dungeon;
     public int x, y;
 
@@ -91,7 +92,14 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Debug.Log("I");
+            if (inventory.activeSelf == false)
+            {
+                inventory.SetActive(true);
+            }
+            else if (inventory.activeSelf == true)
+            {
+                inventory.SetActive(false);
+            }
         }
     }
 }

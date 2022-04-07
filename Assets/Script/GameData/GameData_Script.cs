@@ -100,6 +100,7 @@ public class Unit : Status
 
     public Sprite sprite_Base;                  //유닛의 베이스 이미지
     public Sprite sprite_Hair;                  //유닛의 머리스타일 이미지
+    public Color color_Hair;                    //유닛의 머리스타일 색깔
     public Sprite sprite_Eyes;                  //유닛의 눈 이미지
     public Sprite sprite_Head;                  //유닛의 머리보호구 이미지
     public Sprite sprite_Body;                  //유닛의 몸통보호구 이미지

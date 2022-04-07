@@ -127,7 +127,7 @@ public class Dungeon_Function
         }
     }
     //랜덤 맵 생성시 가장 큰 공간만 남기기
-    public static void Largest_Space(Dungeon dungeon)
+    public static int Largest_Space(Dungeon dungeon)
     {
         List<int> space_List = new List<int>();
         int[,] space_Layer = new int[dungeon.layer1.GetLength(0), dungeon.layer1.GetLength(1)];
@@ -225,5 +225,7 @@ public class Dungeon_Function
                 }
             }
         }
+        //최빈값 횟수 리턴(맵의 크기가 작을 경우 맵 재생성)
+        return mode.Count();
     }
 }

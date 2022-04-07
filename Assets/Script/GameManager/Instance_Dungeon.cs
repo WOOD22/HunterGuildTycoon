@@ -47,8 +47,8 @@ public class Instance_Dungeon : MonoBehaviour
     void Create_Dungeon_Goblin_Cave(Dungeon dungeon)
     {
         int size_x = 128, size_y = 128;
-        //while (true)
-        { 
+        while (true)
+        {
             Dungeon_Function.Dungeon_Initialization(dungeon, size_x, size_y);
             pathList = new List<Node>();
             for (int x = 1; x < size_x - 1; x++)
@@ -97,41 +97,42 @@ public class Instance_Dungeon : MonoBehaviour
                     }
                 }
             }
-            Dungeon_Function.Largest_Space(dungeon);
-            //입구 출구 생성
-            Dungeon_Function.Far_Enter_And_Exit(dungeon);
-
-            try
+            //큰공간 탐색(탐색 후 일정 크기 이상이면 루프 끝냄)
+            if (Dungeon_Function.Largest_Space(dungeon) > (size_x * size_y) / 3)
             {
-                int enter_x = 0, enter_y = 0;
-                int exit_x = 0, exit_y = 0;
-
-                for (int x = 0; x < size_x; x++)
-                {
-                    for (int y = 0; y < size_y; y++)
-                    {
-                        if (dungeon.layer3[x, y] == 1)
-                        {
-                            enter_x = x;
-                            enter_y = y;
-                            player.GetComponent<Player>().Start_Position(dungeon, enter_x, enter_y);
-                        }
-                        if (dungeon.layer3[x, y] == 2)
-                        {
-                            exit_x = x;
-                            exit_y = y;
-                        }
-                    }
-                }
-                //pathList = Astar_Pathfinder.Pathfinder(dungeon.layer1, new Vector2Int(enter_x, enter_y), new Vector2Int(exit_x, exit_y));
-                //break;
-            }
-            catch (NullReferenceException)
-            {
-
+                break;
             }
         }
-        //테스트용 렌더링
+            //입구 출구 생성
+        Dungeon_Function.Far_Enter_And_Exit(dungeon);
+
+        try
+        {
+            int enter_x = 0, enter_y = 0;
+            int exit_x = 0, exit_y = 0;
+
+            for (int x = 0; x < size_x; x++)
+            {
+                for (int y = 0; y < size_y; y++)
+                {
+                    if (dungeon.layer3[x, y] == 1)
+                    {
+                        enter_x = x;
+                        enter_y = y;
+                        player.GetComponent<Player>().Start_Position(dungeon, enter_x, enter_y);
+                    }
+                    if (dungeon.layer3[x, y] == 2)
+                    {
+                        exit_x = x;
+                        exit_y = y;
+                    }
+                }
+            }
+        }
+        catch (NullReferenceException)
+        {
+
+        }
         Dungeon_Instantiate(dungeon);
     }
     //테스트 렌더링=================================================================================================
