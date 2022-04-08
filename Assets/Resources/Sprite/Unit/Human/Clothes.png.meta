@@ -1,16 +1,28 @@
 fileFormatVersion: 2
-guid: 81608778c1e673e4c9ff900976f07975
+guid: 992f7b68617b50846ac067fd27c66643
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 923599813474361173
-    second: Unit_Human_Hair_0
+      213: 4862942130373081034
+    second: Clothes_0
   - first:
-      213: 3620771735652776460
-    second: Unit_Human_Hair_1
+      213: 7566583126990785104
+    second: Clothes_1
   - first:
-      213: -1841383316720400189
-    second: Unit_Human_Hair_2
+      213: 7798115773135034406
+    second: Clothes_2
+  - first:
+      213: -6630935928423092300
+    second: Clothes_3
+  - first:
+      213: -6475819047146179335
+    second: Clothes_4
+  - first:
+      213: 1741794351880512470
+    second: Clothes_5
+  - first:
+      213: 8927547857190717070
+    second: Clothes_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -124,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Unit_Human_Hair_0
+      name: Clothes_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,41 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55f91cc032941dc00800000000000000
-      internalID: 923599813474361173
+      spriteID: ac73b244a14ac7340800000000000000
+      internalID: 4862942130373081034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Unit_Human_Hair_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c0abb5cb5b09f3230800000000000000
-      internalID: 3620771735652776460
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Unit_Human_Hair_2
+      name: Clothes_1
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,8 +171,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c8cc8721a71276e0800000000000000
-      internalID: -1841383316720400189
+      spriteID: 05a00c7b347e10960800000000000000
+      internalID: 7566583126990785104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clothes_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 628951fbaf8783c60800000000000000
+      internalID: 7798115773135034406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clothes_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bf67f1c7ee2af3a0800000000000000
+      internalID: -6630935928423092300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clothes_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f4b42113e44126a0800000000000000
+      internalID: -6475819047146179335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clothes_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d3ae9f0cb81c2810800000000000000
+      internalID: 1741794351880512470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clothes_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e860727d97505eb70800000000000000
+      internalID: 8927547857190717070
       vertices: []
       indices: 
       edges: []

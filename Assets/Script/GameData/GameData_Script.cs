@@ -98,14 +98,7 @@ public class Unit : Status
     public string skill_Type;
     public string attack_Type;
 
-    public Sprite sprite_Base;                  //유닛의 베이스 이미지
-    public Sprite sprite_Hair;                  //유닛의 머리스타일 이미지
-    public Color color_Hair;                    //유닛의 머리스타일 색깔
-    public Sprite sprite_Eyes;                  //유닛의 눈 이미지
-    public Sprite sprite_Head;                  //유닛의 머리보호구 이미지
-    public Sprite sprite_Body;                  //유닛의 몸통보호구 이미지
-    public Sprite sprite_Weapon_1;              //유닛의 무기 이미지1
-    public Sprite sprite_Weapon_2;              //유닛의 무기 이미지2
+    public int Hair;                            //유닛의 머리스타일 이미지
     
     public Item unit_Head_Item;                 //유닛의 머리보호구 
     public Item unit_Body_Item;                 //유닛의 몸통보호구 
