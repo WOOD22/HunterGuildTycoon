@@ -106,8 +106,9 @@ public class Unit : Status
     public Item unit_Weapon_2_Item;             //유닛의 무기2
     public Item unit_Accessory_1_Item;          //유닛의 장신구1
     public Item unit_Accessory_2_Item;          //유닛의 장신구2
+    public Item unit_Backpack_Item;             //유닛의 가방(망토도 됨)
 
-    //public List<Item> unit_Item_List;           //유닛이 소유한 아이템
+    public List<Item> unit_Item_List;           //유닛이 소유한 아이템
 }
 [Serializable]
 public class Status
@@ -121,7 +122,8 @@ public class Status
     public int max_Hunger, left_Hunger;         //0에 가까울수록 배고픔(모두 소진 시 HP 소모)
     public int max_Thirst, left_Thirst;         //0에 가까울수록 목마름(모두 소진 시 HP 소모)
     public int max_Sleep, left_Sleep;           //0에 가까울수록 졸림(모두 소진 시 MP 소모)
-    public float max_WT, pool_WT;               //Weight의 약자
+    public float max_WT, pool_WT;               //소지 가능한 무게
+    public float max_VL, pool_VL;               //소지 가능한 부피
     public int st_STR, st_DEX, st_CON;          //신체 능력치(평균 10)
     public int st_INT, st_WIS, st_WIL;          //정신 능력치(평균 10)
     public int pt_STR, pt_DEX, pt_CON;          //신체 능력치 가중치(평균 10)
