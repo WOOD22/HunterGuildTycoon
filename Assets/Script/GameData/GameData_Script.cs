@@ -93,13 +93,13 @@ public class Unit : Status
     public string name;                         //유닛의 이름
     public string species;                      //유닛의 종족
     public string faction;                      //유닛의 팩션
-    public string character;                    //유닛의 성격
+    public List<string> character               //유닛의 특성
+        = new List<string>();
 
     public string skill_Type;
     public string attack_Type;
 
     public int Hair;                            //유닛의 머리스타일 이미지
-    
     public Item unit_Head_Item;                 //유닛의 머리보호구 
     public Item unit_Body_Item;                 //유닛의 몸통보호구 
     public Item unit_Weapon_1_Item;             //유닛의 무기1 
