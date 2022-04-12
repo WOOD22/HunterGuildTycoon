@@ -9,7 +9,13 @@ public class NewGameUIManager : MonoBehaviour
     public string species = "Human";
     public int hair_num = 0;
     public int clothes_num = 0;
-    //유닛 머리카락
+    void Start()
+    {
+        GameData.clan_List.Add(new Clan());
+        
+    }
+
+    //유닛 머리카락 커스텀
     public void Costomizing_Hair(int num)
     {
         Sprite[] hair_Image = Resources.LoadAll<Sprite>("Sprite/Unit/" + species + "/Hair");
@@ -24,7 +30,7 @@ public class NewGameUIManager : MonoBehaviour
         }
         costomize_temp.transform.Find("Hair").GetComponent<Image>().sprite = hair_Image[hair_num];
     }
-    //유닛 초기 복장
+    //유닛 초기 복장 커스텀
     public void Costomizing_Clothes(int num)
     {
         Sprite[] clothes_Image = Resources.LoadAll<Sprite>("Sprite/Unit/" + species + "/Clothes");

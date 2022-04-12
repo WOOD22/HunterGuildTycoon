@@ -52,7 +52,7 @@ public class GameData
 [Serializable]
 public class Clan
 {
-    public string clan_Code;                    //클랜 코드
+    public string clan_Code;                    //클랜 코드(CL000000)
     public string clan_Name;                    //클랜 이름
     public Image clan_Image;                    //클랜 이미지
     public string clan_Master_Code;             //클랜 마스터의 코드
@@ -69,7 +69,7 @@ public class Clan
 [Serializable]
 public class Party
 {
-    public string party_Code;                   //파티 코드
+    public string party_Code;                   //파티 코드(PT000000)
     public string party_Name;                   //파티 이름
     public string party_Leader_Code;            //파티 리더
     public List<string> party_Member            //파티 멤버(리더 포함)
@@ -89,7 +89,7 @@ public class Party
 [Serializable]
 public class Unit : Status
 {
-    public string code;                         //유닛의 코드
+    public string code;                         //유닛의 코드(UN000000)
     public string name;                         //유닛의 이름
     public string species;                      //유닛의 종족
     public string faction;                      //유닛의 팩션
@@ -124,8 +124,8 @@ public class Status
     public int max_Sleep, left_Sleep;           //0에 가까울수록 졸림(모두 소진 시 MP 소모)
     public float max_WT, pool_WT;               //소지 가능한 무게
     public float max_VL, pool_VL;               //소지 가능한 부피
-    public int st_STR, st_DEX, st_CON;          //신체 능력치(평균 10)
-    public int st_INT, st_WIS, st_WIL;          //정신 능력치(평균 10)
+    public int st_STR, st_DEX, st_CON;          //신체 능력치(평균 10) Physical
+    public int st_INT, st_WIS, st_WIL;          //정신 능력치(평균 10) Mental
     public int pt_STR, pt_DEX, pt_CON;          //신체 능력치 가중치(평균 10)
     public int pt_INT, pt_WIS, pt_WIL;          //정신 능력치 가중치(평균 10)
     public int df_Physical, df_Magic;           //방어력(받은 피해량 = 데미지 * 추가 - 방어력)
@@ -173,7 +173,7 @@ public class Status
 [Serializable]
 public class Skill_Class
 {
-    public string code;
+    public string code;                         //스킬 코드(SK000000)
     public string name;
     public Sprite sprite_Skill;
     public string type;
@@ -197,7 +197,7 @@ public class Atteck_Class
 [Serializable]
 public class Item
 {
-    public string code;                         //아이템 코드
+    public string code;                         //아이템 코드(IT000000)
     public string name;                         //아이템 이름
     public Sprite sprite_Item;                  //아이템 이미지
     public string type;                         //아이템 타입(장비형, 소모형)
