@@ -7,3 +7,4 @@
 현황 : 간단한 커스텀마이즈, 1층 동굴맵 생성  
 이미지  
 <img width="80%" src=https://user-images.githubusercontent.com/90883790/163098495-98b296d9-df71-46b7-a5d5-f43e1145d1db.png>
+<img width="80%" src=https://user-images.githubusercontent.com/90883790/163099082-9fca88ba-322a-4214-8873-92b27495a046.png>
