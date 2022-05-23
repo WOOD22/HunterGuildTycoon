@@ -19,7 +19,6 @@ public class GameData
     public static int year;
     public static int month;
     public static int turn;
-    public static List<Clan> clan_List = new List<Clan>();
     public static List<Party> party_List = new List<Party>();
     public static List<Unit> Unit_List = new List<Unit>();
     public static List<Dungeon> dungeon_Data = new List<Dungeon>();
@@ -50,23 +49,6 @@ public class GameData
     }
 }
 [Serializable]
-public class Clan
-{
-    public string clan_Code;                    //클랜 코드(CL000000)
-    public string clan_Name;                    //클랜 이름
-    public Image clan_Image;                    //클랜 이미지
-    public string clan_Master_Code;             //클랜 마스터의 코드
-    public List<string> clan_Manager_Code_List  //클랜 매니저 코드 리스트
-        = new List<string>();
-    public List<string> clan_Unit_Code_List     //클랜에 소속된 유닛 코드 리스트(마스터, 매니저 포함)
-        = new List<string>();
-    public List<string> clan_Party_Code_List    //클랜에 소속된 파티 코드 리스트
-        = new List<string>();
-    public int clan_Money;                      //클랜이 소유한 재화
-    public List<Item> clan_Item                 //클랜이 소유한 아이템
-        = new List<Item>();
-}
-[Serializable]
 public class Party
 {
     public string party_Code;                   //파티 코드(PT000000)
@@ -83,8 +65,6 @@ public class Party
     public int party_Sight;                     //파티 시야(시야가 가장 높은 유닛의 시야)
     public List<Node> party_Path_List           //파티가 이동할 경로
         = new List<Node>();
-    public List<Item> party_Item_List           //파티가 소유한 아이템
-        = new List<Item>();
 }
 [Serializable]
 public class Unit : Status
@@ -108,7 +88,8 @@ public class Unit : Status
     public Item unit_Accessory_2_Item;          //유닛의 장신구2
     public Item unit_Backpack_Item;             //유닛의 가방(망토도 됨)
 
-    public List<Item> unit_Item_List;           //유닛이 소유한 아이템
+    public List<Item> unit_Item_List            //유닛이 소유한 아이템
+         = new List<Item>();
 }
 [Serializable]
 public class Status

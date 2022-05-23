@@ -2086,8 +2086,8 @@ SpriteRenderer:
   m_SortingLayerID: 929890535
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d587c95529c18ea40ab1ef528dcb9dd9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2122,7 +2122,6 @@ MonoBehaviour:
     party_pos_y: 0
     party_Sight: 0
     party_Path_List: []
-    party_Item_List: []
   inventory: {fileID: 780815191}
   x: 0
   y: 0
@@ -7550,14 +7549,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1e13fd41489071044ac40dabb1add8ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c9d268c1bc72edf4ab25a112e67eab9d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -13,7 +13,6 @@ public class NewGameUIManager : MonoBehaviour
     public Text clothes_num_text;
     void Start()
     {
-        GameData.clan_List.Add(new Clan());
         GameData.Unit_List.Add(new Unit());
         hair_num_text.text = (hair_num + 1).ToString();
         clothes_num_text.text = (clothes_num + 1).ToString();
